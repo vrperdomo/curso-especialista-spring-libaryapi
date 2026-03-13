@@ -1,0 +1,2 @@
+# Comando para criar a imagem do banco PostgreSql
+docker run --name libarydb -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=libary --network libary-network postgres:18.3
