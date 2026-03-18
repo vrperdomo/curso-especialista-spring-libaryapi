@@ -1,4 +1,4 @@
-package io.github.vrperdomo.libaryapi.config;
+package io.github.cursodsousa.libraryapi.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -14,17 +14,14 @@ public class DatabaseConfiguration {
 
     @Value("${spring.datasource.url}")
     String url;
-
     @Value("${spring.datasource.username}")
     String username;
-
     @Value("${spring.datasource.password}")
     String password;
-
     @Value("${spring.datasource.driver-class-name}")
     String driver;
 
-    @Bean
+    //    @Bean
     public DataSource dataSource(){
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setUrl(url);
@@ -34,22 +31,27 @@ public class DatabaseConfiguration {
         return ds;
     }
 
+    /**
+     * configuracao Hikary
+     * https://github.com/brettwooldridge/HikariCP
+     * @return
+     */
     @Bean
-    public DataSource hikariDataSoource(){
+    public DataSource hikariDataSource(){
 
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setUsername(username);
-        hikariConfig.setPassword(password);
-        hikariConfig.setDriverClassName(driver);
-        hikariConfig.setJdbcUrl(url);
+        HikariConfig config = new HikariConfig();
+        config.setUsername(username);
+        config.setPassword(password);
+        config.setDriverClassName(driver);
+        config.setJdbcUrl(url);
 
-        hikariConfig.setMaximumPoolSize(10); // Máximo de conexões liberadas
-        hikariConfig.setMinimumIdle(1); // Tamanho inicial do pool
-        hikariConfig.setPoolName("libary-db-pool");
-        hikariConfig.setMaxLifetime(600000); // 600 mil ms (10 minutos)
-        hikariConfig.setConnectionTimeout(100000); // Timeout para conseguir uma conexão
-        hikariConfig.setConnectionTestQuery("select 1"); // Query de teste
+        config.setMaximumPoolSize(10); // maximo de conexões liberadas
+        config.setMinimumIdle(1); // tamanho inicial do pool
+        config.setPoolName("library-db-pool");
+        config.setMaxLifetime(600000); // 600 mil ms (10 minutos)
+        config.setConnectionTimeout(100000); // timeout para conseguir uma conexão
+        config.setConnectionTestQuery("select 1"); // query de teste
 
-        return new HikariDataSource(hikariConfig);
+        return new HikariDataSource(config);
     }
 }
