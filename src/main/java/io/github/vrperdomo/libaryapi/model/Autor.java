@@ -27,8 +27,8 @@ public class Autor {
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @Column(name = "nascionalidade", length = 50, nullable = false)
-    private String nascionalidade;
+    @Column(name = "nacionalidade", length = 50, nullable = false)
+    private String nacionalidade;
 
     @OneToMany(mappedBy = "autor")
     private List<Livro> livros;
