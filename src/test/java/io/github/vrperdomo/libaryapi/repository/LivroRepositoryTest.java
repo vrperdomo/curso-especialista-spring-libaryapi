@@ -27,12 +27,12 @@ class LivroRepositoryTest {
         Livro livro = new Livro();
         livro.setIsbn("90887-84874");
         livro.setPreco(BigDecimal.valueOf(100));
-        livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("Outro Livro");
+        livro.setGenero(GeneroLivro.CIENCIA);
+        livro.setTitulo("Ciencias");
         livro.setDataPublicacao(LocalDate.of(1980, 1, 2));
 
         Autor autor = autorRepository
-                .findById(UUID.fromString("76e7c418-ccf9-4e2a-af20-c28b9e50ab55"))
+                .findById(UUID.fromString("133ba077-9ff7-4cac-8188-154a0ac52230"))
                 .orElse(null);
 
         livro.setAutor(autor);
@@ -43,14 +43,14 @@ class LivroRepositoryTest {
     @Test
     void salvarAutorELivroTest(){
         Livro livro = new Livro();
-        livro.setIsbn("90887-2207");
+        livro.setIsbn("90887-84874");
         livro.setPreco(BigDecimal.valueOf(100));
         livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("Livro Victor");
+        livro.setTitulo("Terceiro Livro");
         livro.setDataPublicacao(LocalDate.of(1980, 1, 2));
 
         Autor autor = new Autor();
-        autor.setNome("Victor");
+        autor.setNome("José");
         autor.setNacionalidade("Brasileira");
         autor.setDataNascimento(LocalDate.of(1951, 1, 31));
 
@@ -61,34 +61,16 @@ class LivroRepositoryTest {
         repository.save(livro);
     }
 
-    @Test
-    void salvarCascadeTest(){
-        Livro livro = new Livro();
-        livro.setIsbn("90887-84874");
-        livro.setPreco(BigDecimal.valueOf(100));
-        livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("Outro Livro");
-        livro.setDataPublicacao(LocalDate.of(1980, 1, 2));
-
-        Autor autor = new Autor();
-        autor.setNome("João");
-        autor.setNacionalidade("Brasileira");
-        autor.setDataNascimento(LocalDate.of(1951, 1, 31));
-
-        livro.setAutor(autor);
-
-        repository.save(livro);
-    }
 
     @Test
     void atualizarAutorDoLivro(){
-        UUID id = UUID.fromString("db686692-41f8-42dd-ba22-9d1ec3a584fc");
+        UUID id = UUID.fromString("3ca5b545-4437-4426-8a77-6a406839b4f9");
         var livroParaAtualizar = repository.findById(id).orElse(null);
 
-        UUID idAutor = UUID.fromString("371fc0e8-e3df-4481-8b8d-ec638f8c9421");
-        Autor victor = autorRepository.findById(idAutor).orElse(null);
+        UUID idAutor = UUID.fromString("133ba077-9ff7-4cac-8188-154a0ac52230");
+        Autor autor = autorRepository.findById(idAutor).orElse(null);
 
-        livroParaAtualizar.setAutor(victor);
+        livroParaAtualizar.setAutor(autor);
 
         repository.save(livroParaAtualizar);
     }
@@ -108,7 +90,7 @@ class LivroRepositoryTest {
     @Test
     @Transactional
     void buscarLivroTest(){
-        UUID id = UUID.fromString("daed83b3-65fd-49eb-9400-cbc0af13059d");
+        UUID id = UUID.fromString("3ca5b545-4437-4426-8a77-6a406839b4f9");
         Livro livro = repository.findById(id).orElse(null);
         System.out.println("Livro:");
         System.out.println(livro.getTitulo());
@@ -140,5 +122,49 @@ class LivroRepositoryTest {
         lista.forEach(System.out::println);
     }
 
+    @Test
+    void listarLivrosComQueryJPQL(){
+        var resultado = repository.listarTodosOrdenadoPorTituloAndPreco();
+        resultado.forEach(System.out::println);
+    }
 
+    @Test
+    void listarAutoresDosLivros(){
+        var resultado = repository.listarAutoresDosLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarTitulosNaoRepetidosDosLivros(){
+        var resultado = repository.listarNomesDiferentesLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGenerosDeLivrosAutoresBrasileiros(){
+        var resultado = repository.listarGenerosAutoresBrasileiros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarPorGeneroQueryParamTest(){
+        var resultado = repository.findByGenero(GeneroLivro.MISTERIO, "preco");
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarPorGeneroPositionalParamTest(){
+        var resultado = repository.findByGeneroPositionalParameters("preco", GeneroLivro.MISTERIO);
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void deletePorGeneroTest(){
+        repository.deleteByGenero(GeneroLivro.CIENCIA);
+    }
+
+    @Test
+    void updateDataPublicacaoTest(){
+        repository.updateDataPublicacao(LocalDate.of(2000,1,1));
+    }
 }

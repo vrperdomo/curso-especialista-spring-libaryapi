@@ -26,7 +26,7 @@ public class AutorRepositoryTest {
     @Test
     public void salvarTest(){
         Autor autor = new Autor();
-        autor.setNome("José");
+        autor.setNome("Valentina");
         autor.setNacionalidade("Brasileira");
         autor.setDataNascimento(LocalDate.of(1951, 1, 31));
 
@@ -80,8 +80,8 @@ public class AutorRepositoryTest {
     @Test
     void salvarAutorComLivrosTest(){
         Autor autor = new Autor();
-        autor.setNome("Antonio");
-        autor.setNacionalidade("Americana");
+        autor.setNome("Victor Perdomo");
+        autor.setNacionalidade("Brasileira");
         autor.setDataNascimento(LocalDate.of(1970, 8, 5));
 
         Livro livro = new Livro();
@@ -96,7 +96,7 @@ public class AutorRepositoryTest {
         livro2.setIsbn("99999-84874");
         livro2.setPreco(BigDecimal.valueOf(650));
         livro2.setGenero(GeneroLivro.MISTERIO);
-        livro2.setTitulo("O roubo da casa assombrada");
+        livro2.setTitulo("O roubo da casa assombrada 2");
         livro2.setDataPublicacao(LocalDate.of(2000, 1, 2));
         livro2.setAutor(autor);
 
@@ -106,7 +106,7 @@ public class AutorRepositoryTest {
 
         repository.save(autor);
 
-//        livroRepository.saveAll(autor.getLivros());
+        livroRepository.saveAll(autor.getLivros());
     }
 
     @Test
