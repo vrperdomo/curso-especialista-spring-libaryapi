@@ -6,6 +6,7 @@ import io.github.vrperdomo.libaryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.vrperdomo.libaryapi.exceptions.RegistroDuplicadoException;
 import io.github.vrperdomo.libaryapi.model.Autor;
 import io.github.vrperdomo.libaryapi.service.AutorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AutorController {
     private final AutorService autorService;
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody AutorDTO autorDTO) {
+    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO autorDTO) {
 
         try {
             Autor autorEntidade = autorDTO.mapearParaAutor();
