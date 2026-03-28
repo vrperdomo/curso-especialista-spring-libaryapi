@@ -6,6 +6,8 @@ import io.github.vrperdomo.libaryapi.repository.AutorRepository;
 import io.github.vrperdomo.libaryapi.repository.LivroRepository;
 import io.github.vrperdomo.libaryapi.validator.AutorValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,6 +54,25 @@ public class AutorService {
         }
 
         return autorRepository.findAll();
+
+    }
+
+    public List<Autor> pesquisaByExample(String nome, String nacionalidade) {
+
+        var autor = new Autor();
+        autor.setNome(nome);
+        autor.setNacionalidade(nacionalidade);
+
+        ExampleMatcher  exampleMatcher = ExampleMatcher
+                .matching()
+                .withIgnorePaths("id", "dataNascimento", "dataCadastro")
+                .withIgnoreNullValues()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Autor> autorExample = Example.of(autor, exampleMatcher);
+
+        return autorRepository.findAll(autorExample);
 
     }
 
