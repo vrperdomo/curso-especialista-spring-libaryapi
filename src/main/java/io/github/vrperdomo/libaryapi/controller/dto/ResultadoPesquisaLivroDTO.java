@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public record ResultadoPesquisaLivroDTO(
         UUID id, String isbn,
-        String Titulo,
+        String titulo,
         LocalDate dataPublicacao,
         GeneroLivro generoLivro,
         BigDecimal preco,
-        AutorDTO autorDTO) {
+        AutorDTO autor) {
 }

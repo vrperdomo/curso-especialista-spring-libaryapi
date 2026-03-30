@@ -2,6 +2,7 @@ package io.github.vrperdomo.libaryapi.controller;
 
 import io.github.vrperdomo.libaryapi.controller.dto.CadastroLivroDTO;
 import io.github.vrperdomo.libaryapi.controller.dto.ErroRespostaDTO;
+import io.github.vrperdomo.libaryapi.controller.dto.ResultadoPesquisaLivroDTO;
 import io.github.vrperdomo.libaryapi.controller.mappers.LivroMapper;
 import io.github.vrperdomo.libaryapi.exceptions.RegistroDuplicadoException;
 import io.github.vrperdomo.libaryapi.model.Livro;
@@ -9,12 +10,10 @@ import io.github.vrperdomo.libaryapi.service.LivroService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/livros")
@@ -38,5 +37,14 @@ public class LivroController implements GenericController {
 
         // retornar código created com header location
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ResultadoPesquisaLivroDTO> obterDetalhes(@PathVariable("id") String id) {
+        return livroService.obterPorId(UUID.fromString(id))
+                .map(livro -> {
+                    var dto = livroMapper.toDTO(livro);
+                    return ResponseEntity.ok(dto);
+                }).orElseGet( () -> ResponseEntity.notFound().build());
     }
 }
