@@ -23,7 +23,7 @@ public record CadastroLivroDTO(
         @Past(message = "A data de nascimento deve ser uma data anterior à data atual")
         LocalDate dataPublicacao,
 
-        GeneroLivro generoLivro,
+        GeneroLivro genero,
 
         BigDecimal preco,
 
